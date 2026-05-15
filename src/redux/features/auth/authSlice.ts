@@ -2,34 +2,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type TUser = {
-  _id: string;
+  id: string; // Changed from _id to match your API
   name: string;
   email: string;
-  role: "USER" | "ADMIN" | string;
-  image: string;
-  address?: string;
+  role: "user" | "admin" | "USER" | "ADMIN" | string;
+  avatar: string; // Changed from image to match your API
+  gender?: "MALE" | "FEMALE" | string;
+  is_verified: boolean;
+  is_active?: boolean;
+  is_admin?: boolean;
+  is_deleted?: boolean;
+  balance?: number;
+  last_login_at?: string;
+  created_at?: string;
+  updated_at?: string;
+  // Optional fields for flexibility
+  is_stripe_connected?: boolean;
+  current_account_id?: string | null;
   phone?: string;
   bio?: string;
-  verified?: boolean;
-  isDeleted?: boolean;
-  location?: {
-    type: "Point";
-    coordinates: [number, number];
-  };
-  interested?: any[];
-  createdAt?: string;
-  updatedAt?: string;
-  // Fields below were in your type but missing from API response
-  // Marked as optional so the app doesn't crash when missing
-  googleId?: string;
-  appleId?: string;
-  stripeAccountId?: string;
-  isStripeConnected?: boolean;
-  post?: number;
-  follower?: number;
-  following?: number;
-  paypalAccount?: string;
-  income?: number;
+  address?: string;
 };
 
 type TAuthState = {
@@ -60,15 +52,18 @@ const authSlice = createSlice({
     ) => {
       const { user, token } = action.payload;
       state.user = user;
-      // Only update token if it's provided in the payload
       if (token) {
         state.token = token;
       }
     },
 
-    // New reducer to update profile specifically without touching the token
-    updateProfile: (state, action: PayloadAction<TUser>) => {
-      state.user = action.payload;
+    updateProfile: (state, action: PayloadAction<Partial<TUser>>) => {
+      if (state.user) {
+        // Merge existing user data with updated fields
+        state.user = { ...state.user, ...action.payload };
+      } else {
+        state.user = action.payload as TUser;
+      }
     },
 
     logout: (state) => {

@@ -2,24 +2,9 @@ import baseAPI from "@/redux/api/api";
 
 const userAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
-    getProfile: build.query({
-      query: () => ({
-        url: `/user/profile`,
-        method: "GET",
-      }),
-    }),
-
     getAllUsers: build.query({
       query: (params) => ({
-        url: `/user/all-user`,
-        method: "GET",
-        params,
-      }),
-    }),
-
-    getUserById: build.query({
-      query: ({ id, params }) => ({
-        url: `/user/profile/${id}`,
+        url: `/admin/users`,
         method: "GET",
         params,
       }),
@@ -27,6 +12,5 @@ const userAPI = baseAPI.injectEndpoints({
   }),
 });
 
-export const { useGetProfileQuery, useGetAllUsersQuery, useGetUserByIdQuery } =
-  userAPI;
+export const { useGetAllUsersQuery } = userAPI;
 export default userAPI;

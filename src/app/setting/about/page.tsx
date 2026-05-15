@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useGetAboutQuery } from "@/redux/features/settings/settingsAPI";
-import Spinner from "@/components/loading/Spinner";
+import Spinner from "@/components/loader/Spinner";
 
 export default function About() {
   const { data: termsData, isLoading } = useGetAboutQuery({});

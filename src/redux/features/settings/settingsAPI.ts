@@ -4,7 +4,7 @@ const settingsAPI = baseAPI.injectEndpoints({
   endpoints: (builder) => ({
     getProfile: builder.query({
       query: () => ({
-        url: `/user/profile`,
+        url: `/profile`,
         method: "GET",
       }),
       providesTags: ["Profile"],
