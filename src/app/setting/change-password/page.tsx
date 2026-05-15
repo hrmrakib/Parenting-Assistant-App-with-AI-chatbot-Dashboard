@@ -5,7 +5,6 @@ import type React from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, AlertCircle, Eye, EyeOff } from "lucide-react";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -60,11 +59,9 @@ export default function ChangePasswordPage() {
     }
 
     try {
-      // Matching your required JSON structure
       const payload = {
-        currentPassword: formData.currentPassword,
+        oldPassword: formData.currentPassword,
         newPassword: formData.newPassword,
-        confirmPassword: formData.confirmPassword,
       };
 
       const res = await updatePassword(payload).unwrap();
@@ -128,7 +125,7 @@ export default function ChangePasswordPage() {
                       value={formData.currentPassword}
                       onChange={handleChange}
                       placeholder='Enter current password'
-                      className='text-lg font-medium text-primary!'
+                      className='text-lg font-medium text-primary! py-5'
                     />
                     <button
                       type='button'
@@ -163,7 +160,7 @@ export default function ChangePasswordPage() {
                       value={formData.newPassword}
                       onChange={handleChange}
                       placeholder='Enter new password'
-                      className='text-lg font-medium text-primary!'
+                      className='text-lg font-medium text-primary! py-5'
                     />
                     <button
                       type='button'
@@ -196,7 +193,7 @@ export default function ChangePasswordPage() {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       placeholder='Re-type new password'
-                      className='text-lg font-medium text-primary!'
+                      className='text-lg font-medium text-primary! py-5'
                     />
                     <button
                       type='button'
@@ -218,7 +215,7 @@ export default function ChangePasswordPage() {
                   <Button
                     type='submit'
                     disabled={isLoading}
-                    className='bg-primary hover:bg-[#5a0921] text-lg font-medium text-white px-8'
+                    className='bg-primary hover:bg-[#8B9F86] text-lg font-medium text-white px-8 py-5 cursor-pointer'
                   >
                     {isLoading ? "Updating..." : "Update Password"}
                   </Button>

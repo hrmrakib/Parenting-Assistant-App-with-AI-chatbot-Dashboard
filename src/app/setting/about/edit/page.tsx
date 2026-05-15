@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   useGetAboutQuery,
-  useSetAboutMutation,
+  useUpdateContextPageMutation,
 } from "@/redux/features/settings/settingsAPI";
 import Spinner from "@/components/loader/Spinner";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
@@ -25,7 +25,7 @@ export default function EditAbout() {
   const terms = termsData?.data;
 
   const [setPrivacyPolicyMutation, { isLoading: isSaving }] =
-    useSetAboutMutation();
+    useUpdateContextPageMutation();
 
   useEffect(() => {
     let initialized = false;
@@ -44,9 +44,9 @@ export default function EditAbout() {
 
         quillRef.current = quill;
 
-        if (terms[0]?.description) {
-          quill.root.innerHTML = terms[0].description;
-          setContent(terms[0].description);
+        if (terms?.content) {
+          quill.root.innerHTML = terms?.content;
+          setContent(terms?.content);
         }
 
         quill.on("text-change", () => {
@@ -74,7 +74,8 @@ export default function EditAbout() {
 
     try {
       const res = await setPrivacyPolicyMutation({
-        description: content,
+        page_name: "about-us",
+        content: content,
       }).unwrap();
 
       if (res) {
@@ -105,7 +106,7 @@ export default function EditAbout() {
           <Button
             onClick={handleSubmit}
             disabled={isSaving}
-            className='bg-primary hover:bg-teal-700'
+            className='bg-primary hover:bg-[#8B9F86] py-5 px-6'
           >
             {isSaving ? "Saving..." : "Save Content"}
           </Button>

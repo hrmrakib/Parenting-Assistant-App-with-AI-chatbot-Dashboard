@@ -183,6 +183,7 @@ export default function PersonalInformationEditPage() {
                       </Label>
                       <Input
                         id='email'
+                        type='email'
                         value={formData.email}
                         onChange={handleChange}
                         className='w-full text-lg bg-gray-100 cursor-not-allowed border-gray-400 text-gray-900'
@@ -195,7 +196,7 @@ export default function PersonalInformationEditPage() {
                   <Button
                     type='submit'
                     disabled={isUpdating}
-                    className='bg-primary hover:bg-teal-700 text-white px-10 py-6 text-lg rounded-full'
+                    className='bg-primary hover:bg-[#8B9F86] text-white px-10 py-6 text-lg rounded-full'
                   >
                     {isUpdating ? "Saving..." : "Save Changes"}
                   </Button>

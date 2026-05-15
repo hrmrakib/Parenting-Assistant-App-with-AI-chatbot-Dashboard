@@ -7,12 +7,12 @@ import "quill/dist/quill.snow.css";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import {
-  useGetTermsAndConditionsQuery,
-  useSetTermsAndConditionsMutation,
-} from "@/redux/features/settings/settingsAPI";
 import Spinner from "@/components/loader/Spinner";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import {
+  useGetTermsQuery,
+  useUpdateContextPageMutation,
+} from "@/redux/features/settings/settingsAPI";
 
 export default function EditTermsAndConditionsPage() {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -20,11 +20,11 @@ export default function EditTermsAndConditionsPage() {
   const [content, setContent] = useState<string>("");
   const router = useRouter();
 
-  const { data: termsData, isLoading } = useGetTermsAndConditionsQuery({});
+  const { data: termsData, isLoading } = useGetTermsQuery({});
   const terms = termsData?.data;
 
   const [setTermsAndConditions, { isLoading: isSaving }] =
-    useSetTermsAndConditionsMutation();
+    useUpdateContextPageMutation();
 
   useEffect(() => {
     let initialized = false;
@@ -43,9 +43,9 @@ export default function EditTermsAndConditionsPage() {
 
         quillRef.current = quill;
 
-        if (terms[0]?.description) {
-          quill.root.innerHTML = terms[0].description;
-          setContent(terms[0].description);
+        if (terms?.content) {
+          quill.root.innerHTML = terms?.content;
+          setContent(terms?.content);
         }
 
         quill.on("text-change", () => {
@@ -73,7 +73,8 @@ export default function EditTermsAndConditionsPage() {
 
     try {
       const res = await setTermsAndConditions({
-        description: content,
+        page_name: "terms",
+        content: content,
       }).unwrap();
 
       if (res) {
@@ -104,7 +105,7 @@ export default function EditTermsAndConditionsPage() {
           <Button
             onClick={handleSubmit}
             disabled={isSaving}
-            className='bg-primary hover:bg-teal-700'
+            className='bg-primary hover:bg-[#8B9F86] py-5 px-6'
           >
             {isSaving ? "Saving..." : "Save Content"}
           </Button>

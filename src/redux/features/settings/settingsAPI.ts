@@ -1,5 +1,10 @@
 import { baseAPI } from "@/redux/api/api";
 
+type TContextPage = {
+  page_name: "about-us" | "terms" | "privacy-policy";
+  content: string;
+};
+
 const settingsAPI = baseAPI.injectEndpoints({
   endpoints: (builder) => ({
     getProfile: builder.query({
@@ -21,75 +26,41 @@ const settingsAPI = baseAPI.injectEndpoints({
 
     updatePassword: builder.mutation({
       query: (data) => ({
-        url: `/auth/change-password`,
+        url: `/profile/change-password`,
         method: "POST",
         body: data,
       }),
     }),
 
-    getTermsAndConditions: builder.query({
+    getAbout: builder.query({
       query: () => ({
-        url: `/terms`,
+        url: `/context-pages/about-us`,
         method: "GET",
       }),
       providesTags: ["Settings"],
     }),
 
-    setTermsAndConditions: builder.mutation({
-      query: (data) => ({
-        url: `/terms`,
-        method: "PATCH",
-        body: data,
+    getTerms: builder.query({
+      query: () => ({
+        url: `/context-pages/terms`,
+        method: "GET",
       }),
-      invalidatesTags: ["Settings"],
+      providesTags: ["Settings"],
     }),
 
     getPrivacyPolicy: builder.query({
       query: () => ({
-        url: `/privacy`,
+        url: `/context-pages/privacy-policy`,
         method: "GET",
       }),
       providesTags: ["Settings"],
     }),
 
-    setPrivacyPolicy: builder.mutation({
-      query: (data) => ({
-        url: `/privacy`,
-        method: "PATCH",
-        body: data,
-      }),
-      invalidatesTags: ["Settings"],
-    }),
-
-    getAbout: builder.query({
-      query: () => ({
-        url: `/about`,
-        method: "GET",
-      }),
-      providesTags: ["Settings"],
-    }),
-
-    setAbout: builder.mutation({
-      query: (data) => ({
-        url: `/about`,
-        method: "PATCH",
-        body: data,
-      }),
-      invalidatesTags: ["Settings"],
-    }),
-
-    getCommunityGuidelines: builder.query({
-      query: () => ({
-        url: `/guidelines`,
-        method: "GET",
-      }),
-      providesTags: ["Settings"],
-    }),
-
-    setCommunityGuidelines: builder.mutation({
-      query: (data) => ({
-        url: `/guidelines`,
-        method: "PATCH",
+    // Unified mutation for all static pages
+    updateContextPage: builder.mutation({
+      query: (data: TContextPage) => ({
+        url: `/admin/context-pages/modify`,
+        method: "POST",
         body: data,
       }),
       invalidatesTags: ["Settings"],
@@ -101,13 +72,9 @@ export const {
   useGetProfileQuery,
   useUpdateProfileMutation,
   useUpdatePasswordMutation,
-  useGetTermsAndConditionsQuery,
-  useSetTermsAndConditionsMutation,
-  useGetPrivacyPolicyQuery,
-  useSetPrivacyPolicyMutation,
   useGetAboutQuery,
-  useSetAboutMutation,
-  useGetCommunityGuidelinesQuery,
-  useSetCommunityGuidelinesMutation,
+  useGetTermsQuery,
+  useGetPrivacyPolicyQuery,
+  useUpdateContextPageMutation,
 } = settingsAPI;
 export default settingsAPI;

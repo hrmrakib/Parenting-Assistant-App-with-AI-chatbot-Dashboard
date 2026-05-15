@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { useGetTermsAndConditionsQuery } from "@/redux/features/settings/settingsAPI";
 import Spinner from "@/components/loader/Spinner";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { useGetTermsQuery } from "@/redux/features/settings/settingsAPI";
 
 export default function TermsConditionPage() {
-  const { data: termsData, isLoading } = useGetTermsAndConditionsQuery({});
+  const { data: termsData, isLoading } = useGetTermsQuery({});
 
   const terms = termsData?.data;
 
@@ -34,17 +34,17 @@ export default function TermsConditionPage() {
 
                 <Link
                   href='/setting/terms-condition/edit'
-                  className='inline-flex items-center text-primary hover:text-[#8B9F86] border border-[#760C2A] rounded-md px-4 py-1.5'
+                  className='inline-flex items-center text-primary hover:text-[#8B9F86] border border-[#8B9F86] rounded-md px-4 py-1.5'
                 >
                   <span className='text-xl font-semibold'>Edit</span>
                 </Link>
               </div>
 
               <div className='prose prose-sm max-w-none text-primary'>
-                {terms[0]?.description && !isLoading ? (
+                {terms?.content && !isLoading ? (
                   <div
                     className='prose prose-sm max-w-none'
-                    dangerouslySetInnerHTML={{ __html: terms[0]?.description }}
+                    dangerouslySetInnerHTML={{ __html: terms?.content }}
                   />
                 ) : (
                   !isLoading && <p>No terms and conditions found</p>

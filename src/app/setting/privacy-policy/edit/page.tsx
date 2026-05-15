@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   useGetPrivacyPolicyQuery,
-  useSetPrivacyPolicyMutation,
+  useUpdateContextPageMutation,
 } from "@/redux/features/settings/settingsAPI";
 import Spinner from "@/components/loader/Spinner";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 export default function EditPrivacyPolicyPage() {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -23,7 +24,7 @@ export default function EditPrivacyPolicyPage() {
   const terms = termsData?.data;
 
   const [setPrivacyPolicyMutation, { isLoading: isSaving }] =
-    useSetPrivacyPolicyMutation();
+    useUpdateContextPageMutation();
 
   useEffect(() => {
     let initialized = false;
@@ -42,9 +43,9 @@ export default function EditPrivacyPolicyPage() {
 
         quillRef.current = quill;
 
-        if (terms[0]?.description) {
-          quill.root.innerHTML = terms[0].description;
-          setContent(terms[0].description);
+        if (terms?.content) {
+          quill.root.innerHTML = terms?.content;
+          setContent(terms?.content);
         }
 
         quill.on("text-change", () => {
@@ -72,7 +73,8 @@ export default function EditPrivacyPolicyPage() {
 
     try {
       const res = await setPrivacyPolicyMutation({
-        description: content,
+        page_name: "privacy-policy",
+        content: content,
       }).unwrap();
 
       if (res) {
@@ -87,26 +89,28 @@ export default function EditPrivacyPolicyPage() {
   };
 
   return (
-    <div className='min-h-[75vh] w-[96%] mx-auto flex flex-col justify-between gap-6'>
-      <div className='space-y-6'>
-        <div className='h-auto'>
-          <div
-            ref={editorRef}
-            className='h-[50vh] bg-white text-base text-primary'
-            id='quill-editor'
-          />
+    <DashboardLayout>
+      <div className='min-h-[75vh] w-[96%] mx-auto flex flex-col justify-between gap-6'>
+        <div className='space-y-6'>
+          <div className='h-auto'>
+            <div
+              ref={editorRef}
+              className='h-[50vh] bg-white text-base text-primary'
+              id='quill-editor'
+            />
+          </div>
+        </div>
+
+        <div className='flex justify-end'>
+          <Button
+            onClick={handleSubmit}
+            disabled={isSaving}
+            className='bg-primary hover:bg-[#8B9F86] py-5 px-6'
+          >
+            {isSaving ? "Saving..." : "Save Content"}
+          </Button>
         </div>
       </div>
-
-      <div className='flex justify-end'>
-        <Button
-          onClick={handleSubmit}
-          disabled={isSaving}
-          className='bg-primary hover:bg-teal-700'
-        >
-          {isSaving ? "Saving..." : "Save Content"}
-        </Button>
-      </div>
-    </div>
+    </DashboardLayout>
   );
 }
