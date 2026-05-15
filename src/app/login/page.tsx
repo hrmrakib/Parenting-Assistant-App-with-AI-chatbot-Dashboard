@@ -133,10 +133,11 @@ export default function LoginPage() {
           </div>
 
           <button
-            type='button'
-            className='w-full h-12 mt-2 rounded-full bg-[#4b5e4a] text-white font-medium hover:bg-[#3a4939] transition-colors focus:outline-none focus:ring-2 focus:ring-[#4b5e4a] focus:ring-offset-2'
+            type='submit'
+            disabled={isLoading}
+            className='w-full h-12 mt-2 rounded-full bg-[#4b5e4a] text-white font-medium hover:bg-[#3a4939] transition-colors focus:outline-none focus:ring-2 focus:ring-[#4b5e4a] focus:ring-offset-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
           >
-            Sign In
+            {isLoading ? "Signing In..." : "Sign In"}
           </button>
         </form>
       </div>
