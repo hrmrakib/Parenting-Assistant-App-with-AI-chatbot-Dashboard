@@ -82,7 +82,7 @@ export default function NotificationsPage() {
 
   return (
     <DashboardLayout>
-      <Card className='rounded-xl border-none shadow-[0_2px_8px_-4px_rgba(0,0,0,0.1)] p-8 min-h-[600px]'>
+      <Card className='rounded-xl border-none shadow-[0_2px_8px_-4px_rgba(0,0,0,0.1)] p-8 min-h-150'>
         {/* Header */}
         <div className='flex items-center justify-between mb-8'>
           <div className='flex items-center gap-3'>
@@ -96,7 +96,7 @@ export default function NotificationsPage() {
               Notifications
             </h2>
             {notifications.filter((n: any) => !n.is_read).length > 0 && (
-              <span className='inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full bg-[#677761] text-white text-xs font-semibold'>
+              <span className='inline-flex items-center justify-center h-5 min-w-5 px-1.5 rounded-full bg-[#677761] text-white text-xs font-semibold'>
                 {notifications.filter((n: any) => !n.is_read).length}
               </span>
             )}
@@ -134,7 +134,7 @@ export default function NotificationsPage() {
                   >
                     {/* Icon */}
                     <div
-                      className={`flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-full border ${style.icon}`}
+                      className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-full border ${style.icon}`}
                     >
                       <Bell className='h-4 w-4' />
                     </div>
@@ -148,7 +148,7 @@ export default function NotificationsPage() {
                           {notification.title}
                         </p>
                         {isUnread && (
-                          <span className='flex-shrink-0 mt-1 h-2 w-2 rounded-full bg-white/80' />
+                          <span className='shrink-0 mt-1 h-2 w-2 rounded-full bg-white/80' />
                         )}
                       </div>
                       <p
@@ -162,7 +162,7 @@ export default function NotificationsPage() {
                     </div>
 
                     {/* Actions */}
-                    <div className='flex-shrink-0 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity'>
+                    <div className='shrink-0 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity'>
                       {isUnread && (
                         <button
                           onClick={() => handleRead(notification.id)}
