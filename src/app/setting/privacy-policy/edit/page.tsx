@@ -11,7 +11,7 @@ import {
   useGetPrivacyPolicyQuery,
   useSetPrivacyPolicyMutation,
 } from "@/redux/features/settings/settingsAPI";
-import Spinner from "@/components/loading/Spinner";
+import Spinner from "@/components/loader/Spinner";
 
 export default function EditPrivacyPolicyPage() {
   const editorRef = useRef<HTMLDivElement>(null);

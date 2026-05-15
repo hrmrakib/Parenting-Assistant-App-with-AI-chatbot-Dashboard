@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import type React from "react";
@@ -14,6 +15,7 @@ import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "@/redux/features/settings/settingsAPI";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 export default function PersonalInformationEditPage() {
   const [formData, setFormData] = useState({
@@ -108,137 +110,139 @@ export default function PersonalInformationEditPage() {
   if (isLoading) return <div className='p-10 text-center'>Loading...</div>;
 
   return (
-    <div className='flex min-h-screen bg-transparent'>
-      <div className='flex-1 w-full'>
-        <main className='bg-transparent w-full p-4 md:p-6'>
-          <div className='mx-auto'>
-            <div className='mb-6 text-primary'>
-              <Link
-                href='/setting/personal-information'
-                className='inline-flex items-center hover:text-teal-700'
-              >
-                <ArrowLeft className='mr-2 h-6 w-6' />
-                <span className='text-2xl font-semibold'>
-                  Personal Information Edit
-                </span>
-              </Link>
-            </div>
+    <DashboardLayout>
+      <div className='flex min-h-screen bg-transparent'>
+        <div className='flex-1 w-full'>
+          <main className='bg-transparent w-full p-4 md:p-6'>
+            <div className='mx-auto'>
+              <div className='mb-6 text-primary'>
+                <Link
+                  href='/setting/personal-information'
+                  className='inline-flex items-center hover:text-teal-700'
+                >
+                  <ArrowLeft className='mr-2 h-6 w-6' />
+                  <span className='text-2xl font-semibold'>
+                    Personal Information Edit
+                  </span>
+                </Link>
+              </div>
 
-            <form onSubmit={handleSubmit} className='space-y-6'>
-              <div className='flex flex-col md:flex-row gap-8'>
-                {/* Profile Image Section */}
-                <div className='w-full md:w-64 flex flex-col items-center border border-gray-600 rounded-md p-6 bg-white/50'>
-                  <div
-                    className='relative mb-4 cursor-pointer group'
-                    onClick={handleImageClick}
-                  >
-                    <div className='w-32 h-32 rounded-full overflow-hidden relative border-2 border-primary'>
-                      <Image
-                        src={displayImageSource}
-                        alt='Profile'
-                        fill
-                        className='object-cover'
+              <form onSubmit={handleSubmit} className='space-y-6'>
+                <div className='flex flex-col md:flex-row gap-8'>
+                  {/* Profile Image Section */}
+                  <div className='w-full md:w-64 flex flex-col items-center border border-gray-600 rounded-md p-6 bg-white/50'>
+                    <div
+                      className='relative mb-4 cursor-pointer group'
+                      onClick={handleImageClick}
+                    >
+                      <div className='w-32 h-32 rounded-full overflow-hidden relative border-2 border-primary'>
+                        <Image
+                          src={displayImageSource}
+                          alt='Profile'
+                          fill
+                          className='object-cover'
+                        />
+                      </div>
+                      <div className='absolute bottom-0 right-0 bg-primary p-2 rounded-full text-white shadow-lg group-hover:scale-110 transition-transform'>
+                        <Camera className='h-4 w-4' />
+                      </div>
+                      <input
+                        type='file'
+                        ref={fileInputRef}
+                        className='hidden'
+                        accept='image/*'
+                        onChange={handleImageChange}
                       />
                     </div>
-                    <div className='absolute bottom-0 right-0 bg-primary p-2 rounded-full text-white shadow-lg group-hover:scale-110 transition-transform'>
-                      <Camera className='h-4 w-4' />
+                    <span className='text-sm text-gray-600 font-medium'>
+                      Profile Photo
+                    </span>
+                    <span className='font-bold text-primary'>
+                      {formData.name || "User"}
+                    </span>
+                  </div>
+
+                  {/* Form Fields Section */}
+                  <div className='flex-1 space-y-4'>
+                    <div className='space-y-2'>
+                      <Label
+                        htmlFor='name'
+                        className='text-lg font-medium text-primary'
+                      >
+                        Name
+                      </Label>
+                      <Input
+                        id='name'
+                        name='name'
+                        value={formData.name}
+                        onChange={handleChange}
+                        className='w-full text-lg border-gray-400 text-gray-900'
+                      />
                     </div>
-                    <input
-                      type='file'
-                      ref={fileInputRef}
-                      className='hidden'
-                      accept='image/*'
-                      onChange={handleImageChange}
-                    />
-                  </div>
-                  <span className='text-sm text-gray-600 font-medium'>
-                    Profile Photo
-                  </span>
-                  <span className='font-bold text-primary'>
-                    {formData.name || "User"}
-                  </span>
-                </div>
 
-                {/* Form Fields Section */}
-                <div className='flex-1 space-y-4'>
-                  <div className='space-y-2'>
-                    <Label
-                      htmlFor='name'
-                      className='text-lg font-medium text-primary'
-                    >
-                      Name
-                    </Label>
-                    <Input
-                      id='name'
-                      name='name'
-                      value={formData.name}
-                      onChange={handleChange}
-                      className='w-full text-lg border-gray-400 text-gray-900'
-                    />
-                  </div>
+                    <div className='space-y-2'>
+                      <Label
+                        htmlFor='email'
+                        className='text-lg font-medium text-primary'
+                      >
+                        Email
+                      </Label>
+                      <Input
+                        id='email'
+                        disabled
+                        value={formData.email}
+                        className='w-full text-lg bg-gray-100 cursor-not-allowed border-gray-400 text-gray-900'
+                      />
+                    </div>
 
-                  <div className='space-y-2'>
-                    <Label
-                      htmlFor='email'
-                      className='text-lg font-medium text-primary'
-                    >
-                      Email
-                    </Label>
-                    <Input
-                      id='email'
-                      disabled
-                      value={formData.email}
-                      className='w-full text-lg bg-gray-100 cursor-not-allowed border-gray-400 text-gray-900'
-                    />
-                  </div>
+                    <div className='space-y-2'>
+                      <Label
+                        htmlFor='address'
+                        className='text-lg font-medium text-primary'
+                      >
+                        Address
+                      </Label>
+                      <Input
+                        id='address'
+                        name='address'
+                        value={formData.address}
+                        onChange={handleChange}
+                        className='w-full text-lg border-gray-400 text-gray-900'
+                      />
+                    </div>
 
-                  <div className='space-y-2'>
-                    <Label
-                      htmlFor='address'
-                      className='text-lg font-medium text-primary'
-                    >
-                      Address
-                    </Label>
-                    <Input
-                      id='address'
-                      name='address'
-                      value={formData.address}
-                      onChange={handleChange}
-                      className='w-full text-lg border-gray-400 text-gray-900'
-                    />
-                  </div>
-
-                  <div className='space-y-2'>
-                    <Label
-                      htmlFor='bio'
-                      className='text-lg font-medium text-primary'
-                    >
-                      Bio
-                    </Label>
-                    <Input
-                      id='bio'
-                      name='bio'
-                      value={formData.bio}
-                      onChange={handleChange}
-                      className='w-full text-lg border-gray-400 text-gray-900'
-                    />
+                    <div className='space-y-2'>
+                      <Label
+                        htmlFor='bio'
+                        className='text-lg font-medium text-primary'
+                      >
+                        Bio
+                      </Label>
+                      <Input
+                        id='bio'
+                        name='bio'
+                        value={formData.bio}
+                        onChange={handleChange}
+                        className='w-full text-lg border-gray-400 text-gray-900'
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className='flex justify-end pt-4'>
-                <Button
-                  type='submit'
-                  disabled={isUpdating}
-                  className='bg-primary hover:bg-teal-700 text-white px-10 py-6 text-lg rounded-full'
-                >
-                  {isUpdating ? "Saving..." : "Save Changes"}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </main>
+                <div className='flex justify-end pt-4'>
+                  <Button
+                    type='submit'
+                    disabled={isUpdating}
+                    className='bg-primary hover:bg-teal-700 text-white px-10 py-6 text-lg rounded-full'
+                  >
+                    {isUpdating ? "Saving..." : "Save Changes"}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

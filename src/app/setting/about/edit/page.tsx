@@ -4,14 +4,16 @@
 import { useEffect, useRef, useState } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import { Button } from "@/components/ui/button";
+
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   useGetAboutQuery,
   useSetAboutMutation,
 } from "@/redux/features/settings/settingsAPI";
-import Spinner from "@/components/loading/Spinner";
+import Spinner from "@/components/loader/Spinner";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { Button } from "@/components/ui/button";
 
 export default function EditAbout() {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -87,26 +89,28 @@ export default function EditAbout() {
   };
 
   return (
-    <div className='min-h-[75vh] w-[96%] mx-auto flex flex-col justify-between gap-6'>
-      <div className='space-y-6'>
-        <div className='h-auto'>
-          <div
-            ref={editorRef}
-            className='h-[50vh] bg-white text-base text-primary'
-            id='quill-editor'
-          />
+    <DashboardLayout>
+      <div className='min-h-[75vh] w-[96%] mx-auto flex flex-col justify-between gap-6'>
+        <div className='space-y-6'>
+          <div className='h-auto'>
+            <div
+              ref={editorRef}
+              className='h-[50vh] bg-white text-base text-primary'
+              id='quill-editor'
+            />
+          </div>
+        </div>
+
+        <div className='flex justify-end'>
+          <Button
+            onClick={handleSubmit}
+            disabled={isSaving}
+            className='bg-primary hover:bg-teal-700'
+          >
+            {isSaving ? "Saving..." : "Save Content"}
+          </Button>
         </div>
       </div>
-
-      <div className='flex justify-end'>
-        <Button
-          onClick={handleSubmit}
-          disabled={isSaving}
-          className='bg-primary hover:bg-teal-700'
-        >
-          {isSaving ? "Saving..." : "Save Content"}
-        </Button>
-      </div>
-    </div>
+    </DashboardLayout>
   );
 }
