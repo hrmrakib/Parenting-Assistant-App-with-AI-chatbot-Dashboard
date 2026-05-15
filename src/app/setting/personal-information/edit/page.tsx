@@ -16,13 +16,12 @@ import {
   useUpdateProfileMutation,
 } from "@/redux/features/settings/settingsAPI";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { getImageUrl } from "@/utils/imagePath";
 
 export default function PersonalInformationEditPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    address: "",
-    bio: "",
   });
 
   const [profileImage, setProfileImage] = useState<File | string>("");
@@ -40,11 +39,9 @@ export default function PersonalInformationEditPage() {
       setFormData({
         name: user.name || "",
         email: user.email || "",
-        address: user.address || "",
-        bio: user.bio || "",
       });
       // Set existing image URL
-      setProfileImage(user.image || "");
+      setProfileImage(user.avatar || "");
     }
   }, [profileResponse]);
 
@@ -72,20 +69,16 @@ export default function PersonalInformationEditPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Prepare data as per your required format
     const updateData = {
       name: formData.name,
-      address: formData.address,
-      bio: formData.bio,
+      email: formData.email,
     };
 
     const formDataToSubmit = new FormData();
-    // Append the JSON data as a string in the 'data' field
     formDataToSubmit.append("data", JSON.stringify(updateData));
 
-    // Append image if a new file was selected
     if (profileImage instanceof File) {
-      formDataToSubmit.append("image", profileImage);
+      formDataToSubmit.append("avatar", profileImage);
     }
 
     try {
@@ -106,6 +99,7 @@ export default function PersonalInformationEditPage() {
     (typeof profileImage === "string" && profileImage
       ? profileImage
       : "/admin.jpg");
+  // const displayImageSource = imagePreview || getImageUrl(prof);
 
   if (isLoading) return <div className='p-10 text-center'>Loading...</div>;
 
@@ -118,7 +112,7 @@ export default function PersonalInformationEditPage() {
               <div className='mb-6 text-primary'>
                 <Link
                   href='/setting/personal-information'
-                  className='inline-flex items-center hover:text-teal-700'
+                  className='inline-flex items-center hover:text-[#8B9F86]'
                 >
                   <ArrowLeft className='mr-2 h-6 w-6' />
                   <span className='text-2xl font-semibold'>
@@ -189,41 +183,9 @@ export default function PersonalInformationEditPage() {
                       </Label>
                       <Input
                         id='email'
-                        disabled
                         value={formData.email}
+                        onChange={handleChange}
                         className='w-full text-lg bg-gray-100 cursor-not-allowed border-gray-400 text-gray-900'
-                      />
-                    </div>
-
-                    <div className='space-y-2'>
-                      <Label
-                        htmlFor='address'
-                        className='text-lg font-medium text-primary'
-                      >
-                        Address
-                      </Label>
-                      <Input
-                        id='address'
-                        name='address'
-                        value={formData.address}
-                        onChange={handleChange}
-                        className='w-full text-lg border-gray-400 text-gray-900'
-                      />
-                    </div>
-
-                    <div className='space-y-2'>
-                      <Label
-                        htmlFor='bio'
-                        className='text-lg font-medium text-primary'
-                      >
-                        Bio
-                      </Label>
-                      <Input
-                        id='bio'
-                        name='bio'
-                        value={formData.bio}
-                        onChange={handleChange}
-                        className='w-full text-lg border-gray-400 text-gray-900'
                       />
                     </div>
                   </div>

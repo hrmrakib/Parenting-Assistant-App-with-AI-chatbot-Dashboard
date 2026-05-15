@@ -24,7 +24,7 @@ export default function CommunityGuidelines() {
               <div className='mb-6 flex items-center justify-between'>
                 <Link
                   href='/setting'
-                  className='inline-flex items-center text-primary hover:text-teal-700'
+                  className='inline-flex items-center text-primary hover:text-[#8B9F86]'
                 >
                   <ArrowLeft className='mr-2 h-4 w-4' />
                   <span className='text-xl font-semibold'>
@@ -34,7 +34,7 @@ export default function CommunityGuidelines() {
 
                 <Link
                   href='/setting/community-guidelines/edit'
-                  className='inline-flex items-center text-primary hover:text-teal-700 border border-[#760C2A] rounded-md px-4 py-1.5'
+                  className='inline-flex items-center text-primary hover:text-[#8B9F86] border border-[#760C2A] rounded-md px-4 py-1.5'
                 >
                   <span className='text-xl font-semibold'>Edit</span>
                 </Link>

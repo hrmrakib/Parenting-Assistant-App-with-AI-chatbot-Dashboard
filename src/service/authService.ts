@@ -2,18 +2,39 @@
 
 import { cookies } from "next/headers";
 
-// Define a function to save the token in cookies
 export const saveTokens = async (token: string): Promise<void> => {
-  (await cookies()).set("token", token);
+  const cookieStore = await cookies();
+  cookieStore.set("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  });
 };
 
-// Define a function to get the current user (token) from cookies
+export const saveRefreshToken = async (token: string): Promise<void> => {
+  const cookieStore = await cookies();
+  cookieStore.set("long_token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 30 * 24 * 60 * 60,
+  });
+};
+
 export const getCurrentUser = async (): Promise<string | undefined> => {
-  const token = (await cookies()).get("token")?.value;
-  return token;
+  const cookieStore = await cookies();
+  return cookieStore.get("token")?.value;
 };
 
-// Define a function to logout by deleting the token from cookies
+export const getRefreshToken = async (): Promise<string | undefined> => {
+  const cookieStore = await cookies();
+  return cookieStore.get("long_token")?.value;
+};
+
 export const logout = async (): Promise<void> => {
-  (await cookies()).delete("token");
+  const cookieStore = await cookies();
+  cookieStore.delete("token");
+  cookieStore.delete("long_token");
 };

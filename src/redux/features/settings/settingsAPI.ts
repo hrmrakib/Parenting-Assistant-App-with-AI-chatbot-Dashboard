@@ -12,7 +12,7 @@ const settingsAPI = baseAPI.injectEndpoints({
 
     updateProfile: builder.mutation({
       query: (data) => ({
-        url: `/user/update-profile`,
+        url: `/profile/edit`,
         method: "PATCH",
         body: data,
       }),

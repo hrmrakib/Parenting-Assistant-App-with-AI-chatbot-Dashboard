@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         hostname: "206.162.244.4",
         // pathname: "/media/**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        // pathname: "/media/**",
+      },
     ],
   },
   reactCompiler: true,

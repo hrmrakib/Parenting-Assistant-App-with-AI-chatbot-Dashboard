@@ -10,6 +10,14 @@ const AuthenticationAPI = baseAPI.injectEndpoints({
       }),
     }),
 
+    getNewAccessToken: builder.query({
+      query: (body) => ({
+        url: "/auth/refresh-token",
+        method: "GET",
+        body,
+      }),
+    }),
+
     createAccount: builder.mutation({
       query: (data) => ({
         url: "/user/create-user",
@@ -70,6 +78,7 @@ const AuthenticationAPI = baseAPI.injectEndpoints({
 
 export const {
   useLoginMutation,
+  useGetNewAccessTokenQuery,
   useCreateAccountMutation,
   useVerifyOtpMutation,
   useSendOtpMutation,

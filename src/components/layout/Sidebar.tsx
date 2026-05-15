@@ -55,7 +55,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
           </button>
 
           {/* Logo Placeholder */}
-          <div className='w-24 h-24 mb-4 bg-transparent flex items-center justify-center relative'>
+          <div className='w-24 h-16 mb-4 bg-transparent flex items-center justify-center relative'>
             <Image src={"/logo.png"} width={200} height={200} alt='logo' />
           </div>
         </div>

@@ -8,7 +8,7 @@ import { AuthInput } from "@/components/ui/AuthInput";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/features/auth/authSlice";
-import { saveTokens } from "@/service/authService";
+import { saveRefreshToken, saveTokens } from "@/service/authService";
 import { toast } from "sonner";
 
 export default function LoginPage() {
@@ -77,6 +77,7 @@ export default function LoginPage() {
           }),
         );
         await saveTokens(data?.data?.access_token);
+        await saveRefreshToken(data?.data?.refresh_token);
         localStorage.setItem("access_token", data?.data?.access_token);
         localStorage.setItem("refresh_token", data?.data?.refresh_token);
         router.push("/");
