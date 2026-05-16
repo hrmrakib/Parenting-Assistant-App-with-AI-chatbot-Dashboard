@@ -43,7 +43,7 @@ export function RoleRedirect({ allowedRole, children }: RoleRedirectProps) {
 
   useEffect(() => {
     if (authStatus === "unauthenticated") {
-      router.replace("/login");
+      // router.replace("/login");
     } else if (authStatus === "redirect_to_own_dashboard") {
       // Direct users checking safe lowercase/uppercase variants plus structural flags
       const isAdmin =
@@ -65,7 +65,7 @@ export function RoleRedirect({ allowedRole, children }: RoleRedirectProps) {
   ) {
     return (
       <div className='flex h-[60vh] w-full items-center justify-center'>
-        <Loader className='animate-spin h-8 w-8 text-primary' />
+        <Loader className='animate-spin h-5 w-5 text-primary' />
       </div>
     );
   }

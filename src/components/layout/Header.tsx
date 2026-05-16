@@ -4,6 +4,7 @@ import { Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import { getImageUrl } from "@/utils/imagePath";
+import Link from "next/link";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -11,8 +12,6 @@ interface HeaderProps {
 
 export function Header({ onMenuClick }: HeaderProps) {
   const { user } = useAuth();
-
-  console.log({ user });
 
   return (
     <header className='sticky top-0 z-30 flex h-22 w-full items-center justify-between border-b border-gray-100 bg-white px-4 sm:px-8 m-4 mt-4 mr-6 rounded-xl shadow-sm'>
@@ -44,7 +43,10 @@ export function Header({ onMenuClick }: HeaderProps) {
           </span>
         </Link> */}
 
-        <div className='flex items-center gap-3 cursor-pointer'>
+        <Link
+          href='/setting/personal-information'
+          className='flex items-center gap-3 cursor-pointer'
+        >
           <div className='h-10 w-10 rounded-full overflow-hidden bg-gray-200'>
             <Image
               src={getImageUrl(user?.avatar)}
@@ -58,7 +60,7 @@ export function Header({ onMenuClick }: HeaderProps) {
               {user?.name || "N/A"}
             </span>
           </div>
-        </div>
+        </Link>
       </div>
     </header>
   );
