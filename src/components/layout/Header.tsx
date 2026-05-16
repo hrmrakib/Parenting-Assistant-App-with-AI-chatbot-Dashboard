@@ -1,7 +1,6 @@
 "use client";
 
-import { Bell, Menu } from "lucide-react";
-import Link from "next/link";
+import { Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import { getImageUrl } from "@/utils/imagePath";
@@ -33,7 +32,7 @@ export function Header({ onMenuClick }: HeaderProps) {
       </div>
 
       <div className='flex items-center gap-6'>
-        <Link
+        {/* <Link
           href='/notifications'
           className='relative p-2 text-gray-600 hover:text-gray-900 transition-colors rounded-full focus:outline-none'
         >
@@ -41,7 +40,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           <span className='absolute top-1.5 right-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white ring-2 ring-white'>
             12
           </span>
-        </Link>
+        </Link> */}
 
         <div className='flex items-center gap-3 cursor-pointer'>
           <div className='h-10 w-10 rounded-full overflow-hidden bg-gray-200'>

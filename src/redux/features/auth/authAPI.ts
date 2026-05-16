@@ -2,27 +2,11 @@ import baseAPI from "@/redux/api/api";
 
 const AuthenticationAPI = baseAPI.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation({
-      query: (body) => ({
-        url: "/auth/login",
-        method: "POST",
-        body,
-      }),
-    }),
-
     getNewAccessToken: builder.query({
       query: (body) => ({
         url: "/auth/refresh-token",
         method: "GET",
         body,
-      }),
-    }),
-
-    createAccount: builder.mutation({
-      query: (data) => ({
-        url: "/user/create-user",
-        method: "POST",
-        body: data,
       }),
     }),
 
@@ -34,15 +18,7 @@ const AuthenticationAPI = baseAPI.injectEndpoints({
       }),
     }),
 
-    sendOtp: builder.mutation({
-      query: (body) => ({
-        url: "/auth/send-otp",
-        method: "POST",
-        body,
-      }),
-    }),
-
-    resendOtp: builder.mutation({
+    resendOtpForPasswordReset: builder.mutation({
       query: (body) => ({
         url: "/auth/resend-otp",
         method: "POST",
@@ -52,7 +28,7 @@ const AuthenticationAPI = baseAPI.injectEndpoints({
 
     forgotPassword: builder.mutation({
       query: (body) => ({
-        url: "/auth/forgot-password",
+        url: "/auth/forgot-password-otp-send",
         method: "POST",
         body,
       }),
@@ -66,9 +42,9 @@ const AuthenticationAPI = baseAPI.injectEndpoints({
       }),
     }),
 
-    verifyForgetPasswordOtp: builder.mutation({
+    verifyForgetPasswordOtpVerify: builder.mutation({
       query: (body) => ({
-        url: "/auth/forgot-password/otp-verify",
+        url: "/auth/forgot-password-otp-verify",
         method: "POST",
         body,
       }),
@@ -77,14 +53,11 @@ const AuthenticationAPI = baseAPI.injectEndpoints({
 });
 
 export const {
-  useLoginMutation,
   useGetNewAccessTokenQuery,
-  useCreateAccountMutation,
   useVerifyOtpMutation,
-  useSendOtpMutation,
-  useResendOtpMutation,
+  useResendOtpForPasswordResetMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
-  useVerifyForgetPasswordOtpMutation,
+  useVerifyForgetPasswordOtpVerifyMutation,
 } = AuthenticationAPI;
 export default AuthenticationAPI;
