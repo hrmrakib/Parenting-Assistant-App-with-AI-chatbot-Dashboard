@@ -12,6 +12,8 @@ interface HeaderProps {
 export function Header({ onMenuClick }: HeaderProps) {
   const { user } = useAuth();
 
+  console.log({ user });
+
   return (
     <header className='sticky top-0 z-30 flex h-22 w-full items-center justify-between border-b border-gray-100 bg-white px-4 sm:px-8 m-4 mt-4 mr-6 rounded-xl shadow-sm'>
       <div className='flex items-center gap-4'>
