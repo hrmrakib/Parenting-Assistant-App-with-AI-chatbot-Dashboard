@@ -17,10 +17,9 @@ export default function ResetPasswordPage() {
 
   const [resetPasswordMutation, { isLoading }] = useResetPasswordMutation();
 
-  // Retrieve the token from localStorage safely on client side mount
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedToken = localStorage.getItem("token");
+      const storedToken = localStorage.getItem("reset_token");
       setToken(storedToken);
     }
   }, []);
@@ -28,13 +27,11 @@ export default function ResetPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 1. Validate that the passwords match
     if (password !== confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
 
-    // 2. Safely fall back if token isn't found in localStorage
     if (!token) {
       toast.error(
         "Session token missing or expired. Please request a new link.",
@@ -43,7 +40,6 @@ export default function ResetPasswordPage() {
     }
 
     try {
-      // 3. Send payload structured matching your requirements
       await resetPasswordMutation({
         token,
         password,
@@ -51,11 +47,9 @@ export default function ResetPasswordPage() {
 
       toast.success("Password reset successfully!");
 
-      // Optional: Clean up localStorage token after usage
-      localStorage.removeItem("token");
+      localStorage.removeItem("reset_token");
 
-      // Redirect smoothly using next router instead of window.location
-      router.push("/signin");
+      router.push("/login");
     } catch (error) {
       console.error("Password reset failed:", error);
       toast.error("Failed to reset password. Please try again.");
@@ -64,7 +58,7 @@ export default function ResetPasswordPage() {
 
   return (
     <AuthLayout>
-      <div className='flex flex-col items-center w-full max-w-[400px] mx-auto'>
+      <div className='flex flex-col items-center w-full max-w-100 mx-auto'>
         <h1 className='text-3xl font-bold text-[#0a192f] mb-8 text-center'>
           Reset Password
         </h1>
@@ -99,7 +93,7 @@ export default function ResetPasswordPage() {
           <button
             type='submit'
             disabled={isLoading}
-            className='w-full h-12 mt-4 rounded-full bg-[#4b5e4a] text-white font-medium hover:bg-[#3a4939] transition-colors focus:outline-none focus:ring-2 focus:ring-[#4b5e4a] focus:ring-offset-2 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed'
+            className='w-full h-12 mt-4 rounded-full bg-[#4b5e4a] text-white font-medium hover:bg-[#3a4939] transition-colors focus:outline-none focus:ring-2 focus:ring-[#4b5e4a] focus:ring-offset-2 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed'
           >
             {isLoading ? (
               <>

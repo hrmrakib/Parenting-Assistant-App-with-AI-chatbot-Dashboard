@@ -20,23 +20,20 @@ export default function OverviewPage() {
 
   const apiData = overviewData?.data;
 
-  // Tracker usage by month from API, fallback to empty array
   const trackerData = apiData?.trackerUsageGraph?.byMonth ?? [];
 
-  // User engagement from API: map activeSessions to sessions field for chart
   const engagementData = (apiData?.userEngagementGraph ?? []).map(
     (item: { month: string; activeSessions: number }) => ({
       name: item.month,
       sessions: item.activeSessions,
-      // No users data from API yet; omit or default to 0
+
       users: 0,
     }),
   );
 
-  // Tracker by-type breakdown for a secondary bar chart
   const trackerByTypeData = apiData?.trackerUsageGraph?.byType
     ? Object.entries(apiData.trackerUsageGraph.byType).map(([type, count]) => ({
-        name: type.charAt(0) + type.slice(1).toLowerCase(), // e.g. "Feeding"
+        name: type.charAt(0) + type.slice(1).toLowerCase(),
         value: count as number,
       }))
     : [];

@@ -17,7 +17,7 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();

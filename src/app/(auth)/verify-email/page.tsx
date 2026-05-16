@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import {
   useVerifyForgetPasswordOtpVerifyMutation,
-  useForgotPasswordMutation, // Using this hook for resending the email code payload
+  useForgotPasswordMutation,
 } from "@/redux/features/auth/authAPI";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -26,7 +26,6 @@ function VerifyEmail() {
   const [forgotPasswordMutation, { isLoading: isResending }] =
     useForgotPasswordMutation();
 
-  // 2. Continuous Countdown Timer Effect Loop
   useEffect(() => {
     if (timeLeft <= 0) return;
 
@@ -51,6 +50,28 @@ function VerifyEmail() {
     if (value && index < 5 && inputRefs.current[index + 1]) {
       inputRefs.current[index + 1]?.focus();
     }
+  };
+
+  // 1. Added explicit paste handler logic
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").trim();
+
+    // Filter down to numbers only
+    const numericData = pastedData.replace(/\D/g, "").slice(0, 6);
+
+    if (numericData.length === 0) return;
+
+    const newOtp = [...otp];
+    // Populate individual array blocks based on parsed string indexes
+    for (let i = 0; i < 6; i++) {
+      newOtp[i] = numericData[i] || "";
+    }
+    setOtp(newOtp);
+
+    // Focus on the next logical cell based on character inputs
+    const targetIndex = Math.min(numericData.length, 5);
+    inputRefs.current[targetIndex]?.focus();
   };
 
   const handleKeyDown = (
@@ -80,7 +101,9 @@ function VerifyEmail() {
         otp: otpString,
       }).unwrap();
 
-      localStorage.setItem("temp_access_token", res?.data?.access_token);
+      if (res?.success) {
+        localStorage.setItem("reset_token", res?.data?.reset_token);
+      }
 
       toast.success("Email verified successfully!");
       router.push(`/reset-password`);
@@ -94,13 +117,12 @@ function VerifyEmail() {
     if (timeLeft > 0 || isResending) return;
 
     try {
-      // 3. Fire the custom mutation to trigger a fresh OTP email delivery
       await forgotPasswordMutation({ email }).unwrap();
 
       toast.success("OTP resent successfully!");
-      setTimeLeft(60); // Reset timer countdown loop back to 60s
-      setOtp(["", "", "", "", "", ""]); // Reset input boxes cleanly
-      inputRefs.current[0]?.focus(); // Re-focus on first cell
+      setTimeLeft(60);
+      setOtp(["", "", "", "", "", ""]);
+      inputRefs.current[0]?.focus();
     } catch (error) {
       console.error("Failed to resend OTP:", error);
       toast.error("Failed to resend code. Please try again.");
@@ -139,6 +161,7 @@ function VerifyEmail() {
                 disabled={isVerifying || isResending}
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
+                onPaste={handlePaste} // 2. Attached the event listener to the elements
                 className='w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-gray-400 bg-transparent text-center text-lg font-medium text-gray-900 outline-none transition-all focus:border-[#e3b4a8] focus:ring-1 focus:ring-[#e3b4a8] disabled:opacity-60'
               />
             ))}
@@ -147,7 +170,7 @@ function VerifyEmail() {
           <button
             type='submit'
             disabled={isVerifying || isResending || otp.join("").length < 6}
-            className='w-full h-12 rounded-full bg-[#4b5e4a] text-white font-medium hover:bg-[#3a4939] transition-colors focus:outline-none focus:ring-2 focus:ring-[#4b5e4a] focus:ring-offset-2 mb-4 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed'
+            className='w-full h-12 rounded-full bg-[#4b5e4a] text-white font-medium hover:bg-[#3a4939] transition-colors focus:outline-none focus:ring-2 focus:ring-[#4b5e4a] focus:ring-offset-2 mb-4 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed'
           >
             {isVerifying ? (
               <>
@@ -159,7 +182,6 @@ function VerifyEmail() {
             )}
           </button>
 
-          {/* 4. Resend interface with active text evaluation formatting */}
           <p className='text-xs text-gray-900 font-medium text-center min-h-4'>
             Don&apos;t get the code?{" "}
             {timeLeft > 0 ? (
