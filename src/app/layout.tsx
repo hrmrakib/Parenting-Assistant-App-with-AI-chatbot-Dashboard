@@ -22,10 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' className={`${inter.variable} h-full antialiased`}>
+    <html
+      lang='en'
+      className={`${inter.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <Providers>
         <AppInitializer>
-          <body className='min-h-full flex flex-col'>
+          <body className='min-h-full flex flex-col' suppressHydrationWarning>
             <Toaster />
 
             {children}

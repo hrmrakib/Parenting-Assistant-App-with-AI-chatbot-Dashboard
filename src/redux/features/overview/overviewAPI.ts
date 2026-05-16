@@ -4,7 +4,7 @@ const overviewAPI = baseAPI.injectEndpoints({
   endpoints: (build) => ({
     getOverview: build.query({
       query: (arg) => ({
-        url: "/user/dashboard-stats",
+        url: "/admin/dashboard",
         method: "GET",
         params: { searchTerm: arg?.searchTerm || "" },
       }),
