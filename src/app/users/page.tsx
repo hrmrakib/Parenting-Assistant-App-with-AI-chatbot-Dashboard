@@ -185,10 +185,7 @@ export default function UsersPage() {
                         <div className='flex items-center gap-3'>
                           <div className='relative h-8 w-8 rounded-full overflow-hidden bg-gray-100'>
                             <Image
-                              src={
-                                getImageUrl(user?.avatar) ||
-                                "/images/placeholder.png"
-                              }
+                              src={getImageUrl(user?.avatar)}
                               alt={user.name}
                               fill
                               className='object-cover'

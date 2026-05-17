@@ -26,7 +26,7 @@ export function Header({ onMenuClick }: HeaderProps) {
 
         <div className='flex flex-col'>
           <h2 className='text-xl font-bold text-gray-900 leading-tight tracking-tight'>
-            Welcome, Sharon
+            Welcome, {user?.name || "N/A"}
           </h2>
           <span className='text-sm text-gray-500'>Have a nice day</span>
         </div>
