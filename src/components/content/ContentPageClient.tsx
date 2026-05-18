@@ -156,7 +156,7 @@ export default function ContentPage() {
     useDeleteContentMutation();
 
   const { data: contentsData } = useGetAllContentQuery(
-    {},
+    { page: 1, limit: 2 },
     { refetchOnMountOrArgChange: true },
   );
   const contents: ContentItem[] = contentsData?.data || [];
