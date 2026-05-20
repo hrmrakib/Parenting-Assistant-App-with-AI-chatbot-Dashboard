@@ -28,6 +28,7 @@ import {
   useDeleteMilestoneTodoMutation,
 } from "@/redux/features/milestones/milestonesAPI";
 import { RoleRedirect } from "@/components/auth/RoleRedirect";
+import GlobalPagination from "@/components/pagination/GlobalPagination";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -231,7 +232,7 @@ function TodoSection({
         onSubmit={handleSubmit}
         className='flex flex-wrap items-end gap-3 mb-4'
       >
-        <div className='flex-1 min-w-[200px]'>
+        <div className='flex-1 min-w-50'>
           <label className='text-xs font-medium text-gray-500 mb-1 block'>
             {editingTodo ? "Edit instruction" : "New todo instruction"}
           </label>
@@ -341,14 +342,21 @@ function TodoSection({
 }
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
-
+type MilestoneType = "for_mom" | "for_baby" | "";
 export default function MilestonePage() {
   const router = useRouter();
+  const [milestoneType, setMilestoneType] = useState<MilestoneType>("");
+  const [page, setPage] = useState(1);
+  const limit = 10;
 
   const { data: milestonesData } = useGetAllMilestonesQuery({
-    page: 1,
-    limit: 50,
+    page: page,
+    limit,
+    milestone_type: (milestoneType as MilestoneType) || undefined,
   });
+
+  const totalPages = milestonesData?.meta?.pagination?.totalPages ?? 1;
+
   const milestones: Milestone[] = (milestonesData?.data ?? []).filter(
     (m: Milestone) => !m.is_deleted,
   );
@@ -411,24 +419,31 @@ export default function MilestonePage() {
 
             {/* Stat chips */}
             <div className='flex flex-wrap gap-3 mb-6'>
-              <div className='px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium'>
-                {milestones.length} Total
+              <div
+                onClick={() => setMilestoneType("")}
+                className='px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium flex items-center gap-1.5'
+              >
+                All {milestoneType === "" && <Check className='h-3.5 w-3.5' />}
               </div>
-              <div className='px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 text-sm font-medium flex items-center gap-1.5'>
+              <div
+                onClick={() => setMilestoneType("for_baby")}
+                className='px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 text-sm font-medium flex items-center gap-1.5'
+              >
                 <Baby className='h-3.5 w-3.5' />
-                {
-                  milestones.filter((m) => m.milestone_type === "for_baby")
-                    .length
-                }{" "}
                 Baby
+                {milestoneType === "for_baby" && (
+                  <Check className='h-3.5 w-3.5' />
+                )}
               </div>
-              <div className='px-3 py-1.5 rounded-lg bg-pink-50 text-pink-600 text-sm font-medium flex items-center gap-1.5'>
+              <div
+                onClick={() => setMilestoneType("for_mom")}
+                className='px-3 py-1.5 rounded-lg bg-pink-50 text-pink-600 text-sm font-medium flex items-center gap-1.5'
+              >
                 <Heart className='h-3.5 w-3.5' />
-                {
-                  milestones.filter((m) => m.milestone_type === "for_mom")
-                    .length
-                }{" "}
                 Mom
+                {milestoneType === "for_mom" && (
+                  <Check className='h-3.5 w-3.5' />
+                )}
               </div>
             </div>
 
@@ -474,7 +489,7 @@ export default function MilestonePage() {
                             }`}
                           >
                             {/* Title */}
-                            <td className='py-4 px-4 max-w-[240px]'>
+                            <td className='py-4 px-4 max-w-60'>
                               <div className='font-medium text-gray-800 truncate'>
                                 {item.title}
                               </div>
@@ -571,6 +586,17 @@ export default function MilestonePage() {
             )}
           </Card>
         </div>
+
+        {/* Pagination Section */}
+        {totalPages > 1 && (
+          <div className='mt-8'>
+            <GlobalPagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={(newPage) => setPage(newPage)}
+            />
+          </div>
+        )}
       </DashboardLayout>
     </RoleRedirect>
   );

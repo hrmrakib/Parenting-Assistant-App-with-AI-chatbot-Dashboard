@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card } from "@/components/ui/Card";
@@ -172,6 +173,11 @@ export default function ContentPage() {
   const setField = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
+  useEffect(() => {
+    setField("videoFile", null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }, [form.content_type]);
+
   const resetForm = () => {
     setForm(INITIAL_FORM);
     setEditingId(null);
@@ -203,7 +209,14 @@ export default function ContentPage() {
       content_type: form.content_type,
     };
     fd.append("data", JSON.stringify(payload));
-    if (form.videoFile) fd.append("video", form.videoFile);
+
+    // if (form.videoFile) fd.append("video", form.videoFile);
+    if (form.videoFile)
+      fd.append(
+        form.content_type === "VIDEO" ? "video" : "image",
+        form.videoFile,
+      );
+
     return fd;
   };
 
@@ -335,6 +348,7 @@ export default function ContentPage() {
                       className='w-full h-11 appearance-none rounded-full border border-gray-200 bg-gray-50/50 px-4 pr-10 text-sm outline-none transition-all focus:border-[#8fa38b] focus:ring-1 focus:ring-[#8fa38b]'
                     >
                       <option value='VIDEO'>Video</option>
+                      <option value='IMAGE'>Image</option>
                     </select>
                     <ChevronDown className='absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none' />
                   </div>
@@ -446,7 +460,10 @@ export default function ContentPage() {
                       </p>
                     ) : (
                       <p className='text-sm text-gray-400'>
-                        Click to upload a video file (.mp4, .mov, .webm)
+                        {/* Click to upload a video file (.mp4, .mov, .webm) */}
+                        {form.content_type === "VIDEO"
+                          ? "Click to upload a video file (.mp4, .mov, .webm)"
+                          : "Click to upload an image file (.jpg, .png, .webp)"}
                       </p>
                     )}
                   </div>
@@ -468,7 +485,8 @@ export default function ContentPage() {
                 <input
                   ref={fileInputRef}
                   type='file'
-                  accept='video/*'
+                  // accept='video/*'
+                  accept={form.content_type === "VIDEO" ? "video/*" : "image/*"}
                   className='hidden'
                   onChange={(e) =>
                     setField("videoFile", e.target.files?.[0] ?? null)
