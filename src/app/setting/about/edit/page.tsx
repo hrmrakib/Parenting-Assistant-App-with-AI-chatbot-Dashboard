@@ -13,7 +13,7 @@ import {
 } from "@/redux/features/settings/settingsAPI";
 import Spinner from "@/components/loader/Spinner";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 export default function EditAbout() {
   const editorRef = useRef<HTMLDivElement>(null);

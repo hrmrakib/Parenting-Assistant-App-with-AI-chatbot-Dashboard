@@ -11,7 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useUpdatePasswordMutation } from "@/redux/features/settings/settingsAPI";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 export default function ChangePasswordPage() {
