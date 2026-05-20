@@ -571,6 +571,79 @@ function TodoSection({
   );
 }
 
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+
+function SkeletonCell({ className = "" }: { className?: string }) {
+  return (
+    <div className={`rounded-md bg-gray-200 animate-pulse ${className}`} />
+  );
+}
+
+function MilestoneTableSkeleton({ rows = 6 }: { rows?: number }) {
+  return (
+    <div className='overflow-x-auto'>
+      <table className='w-full text-left text-[14px]'>
+        <thead>
+          <tr className='border-b-2 border-gray-100 text-gray-900'>
+            <th className='pb-3 px-4 font-semibold'>Title</th>
+            <th className='pb-3 px-4 font-semibold text-center'>Type</th>
+            <th className='pb-3 px-4 font-semibold text-center'>
+              Month / Week
+            </th>
+            <th className='pb-3 px-4 font-semibold text-center'>Todos</th>
+            <th className='pb-3 px-4 font-semibold text-center'>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: rows }).map((_, i) => (
+            <tr
+              key={i}
+              className='border-b border-gray-100'
+              style={{ opacity: 1 - i * 0.1 }}
+            >
+              {/* Title col */}
+              <td className='py-4 px-4 max-w-60'>
+                <SkeletonCell className='h-4 w-40 mb-2' />
+                <SkeletonCell className='h-3 w-56' />
+              </td>
+
+              {/* Type col */}
+              <td className='py-4 px-4'>
+                <div className='flex justify-center'>
+                  <SkeletonCell className='h-6 w-16 rounded-full' />
+                </div>
+              </td>
+
+              {/* Month/Week col */}
+              <td className='py-4 px-4'>
+                <div className='flex justify-center'>
+                  <SkeletonCell className='h-4 w-20' />
+                </div>
+              </td>
+
+              {/* Todos col */}
+              <td className='py-4 px-4'>
+                <div className='flex justify-center'>
+                  <SkeletonCell className='h-6 w-24 rounded-full' />
+                </div>
+              </td>
+
+              {/* Actions col */}
+              <td className='py-4 px-4'>
+                <div className='flex items-center justify-center gap-3'>
+                  <SkeletonCell className='h-4 w-4 rounded' />
+                  <SkeletonCell className='h-4 w-4 rounded' />
+                  <SkeletonCell className='h-4 w-4 rounded' />
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 // ─── Main Page ────────────────────────────────────────────────────────────────
 type MilestoneType = "for_mom" | "for_baby" | "";
 
@@ -582,7 +655,7 @@ export default function MilestonePage() {
 
   const [connectContentToMilestoneMutation, { isLoading: isConnecting }] =
     useConnectContentToMilestoneMutation();
-  const { data: milestonesData } = useGetAllMilestonesQuery({
+  const { data: milestonesData, isFetching } = useGetAllMilestonesQuery({
     page: page,
     limit,
     milestone_type: (milestoneType as MilestoneType) || undefined,
@@ -717,7 +790,9 @@ export default function MilestonePage() {
             </div>
 
             {/* Table */}
-            {milestones.length === 0 ? (
+            {isFetching ? (
+              <MilestoneTableSkeleton rows={limit} />
+            ) : milestones.length === 0 ? (
               <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400'>
                 <Flag className='h-10 w-10 mb-3 opacity-30' />
                 <p className='text-sm font-medium'>No milestones yet</p>
