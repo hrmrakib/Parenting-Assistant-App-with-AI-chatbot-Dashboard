@@ -4,9 +4,10 @@ const contentAPI = baseAPI.injectEndpoints({
   overrideExisting: false,
   endpoints: (builder) => ({
     getAllContent: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: `/contents`,
         method: "GET",
+        params,
       }),
       providesTags: ["Content"],
     }),

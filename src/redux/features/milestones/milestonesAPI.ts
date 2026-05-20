@@ -92,6 +92,15 @@ const milestonesAPI = baseAPI.injectEndpoints({
       }),
       invalidatesTags: ["Milestone"],
     }),
+
+    connectContentToMilestone: builder.mutation({
+      query: (body) => ({
+        url: `/milestones/connect-content`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Milestone"],
+    }),
   }),
 });
 
@@ -106,6 +115,7 @@ export const {
   useCreateMilestoneTodoMutation,
   useUpdateMilestoneTodoMutation,
   useDeleteMilestoneTodoMutation,
+  useConnectContentToMilestoneMutation,
 } = milestonesAPI;
 
 export default milestonesAPI;
