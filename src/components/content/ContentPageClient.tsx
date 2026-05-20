@@ -441,7 +441,7 @@ export default function ContentPage() {
 
               <div className='space-y-2'>
                 <label className='text-sm font-medium text-gray-900'>
-                  Video File{" "}
+                  {form.content_type === "VIDEO" ? "Video File" : "Image File"}
                   {isEditMode && (
                     <span className='text-xs text-gray-400 font-normal'>
                       (leave empty to keep existing)
