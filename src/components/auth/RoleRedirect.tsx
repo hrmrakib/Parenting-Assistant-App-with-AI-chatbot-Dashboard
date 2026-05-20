@@ -50,7 +50,7 @@ export function RoleRedirect({ allowedRole, children }: RoleRedirectProps) {
         user?.is_admin === true || user?.role?.toUpperCase() === "ADMIN";
 
       if (isAdmin) {
-        router.replace("/admin/dashboard");
+        router.replace("/dashboard");
       } else {
         router.replace("/goooooooooo");
       }

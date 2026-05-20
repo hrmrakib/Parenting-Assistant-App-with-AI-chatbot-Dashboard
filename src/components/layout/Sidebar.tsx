@@ -14,7 +14,6 @@ import {
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { logout } from "@/service/authService";
-import { setUser } from "@/redux/features/auth/authSlice";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -24,6 +23,7 @@ interface SidebarProps {
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Content", href: "/content", icon: BookOpen },
+  { name: "Milestone", href: "/milestones", icon: BookOpen },
   { name: "User", href: "/users", icon: Users },
   { name: "Settings", href: "/setting", icon: Settings },
 ];
@@ -124,7 +124,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
 
       {/* 3. Warning Confirmation Modal Portal Shell */}
       {showLogoutModal && (
-        <div className='fixed inset-0 z-[100] flex items-center justify-center p-4'>
+        <div className='fixed inset-0 z-100 flex items-center justify-center p-4'>
           {/* Backdrop blur cover overlay block */}
           <div
             className='fixed inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity'
