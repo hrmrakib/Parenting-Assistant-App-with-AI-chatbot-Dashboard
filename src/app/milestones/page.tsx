@@ -490,10 +490,10 @@ export default function MilestonePage() {
                           >
                             {/* Title */}
                             <td className='py-4 px-4 max-w-60'>
-                              <div className='font-medium text-gray-800 truncate'>
+                              <div className='font-medium text-gray-800 text-base truncate'>
                                 {item.title}
                               </div>
-                              <p className='text-xs text-gray-400 mt-0.5 truncate'>
+                              <p className='text-sm text-gray-400 mt-0.5 truncate'>
                                 {item.instructions}
                               </p>
                             </td>
