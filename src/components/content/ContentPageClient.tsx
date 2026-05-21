@@ -27,6 +27,7 @@ import {
   useUpdateContentMutation,
 } from "@/redux/features/content/contentAPI";
 import { RoleRedirect } from "../auth/RoleRedirect";
+import GlobalPagination from "../pagination/GlobalPagination";
 
 interface ContentItem {
   id: string;
@@ -156,10 +157,13 @@ export default function ContentPage() {
   const [deleteContentMutation, { isLoading: isDeleting }] =
     useDeleteContentMutation();
 
+  const [page, setPage] = useState(1);
+  const limit = 10;
   const { data: contentsData } = useGetAllContentQuery(
-    { page: 1, limit: 2 },
+    { page, limit },
     { refetchOnMountOrArgChange: true },
   );
+  const totalPages = contentsData?.meta?.pagination?.totalPages ?? 1;
   const contents: ContentItem[] = contentsData?.data || [];
 
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
@@ -659,6 +663,12 @@ export default function ContentPage() {
                 </table>
               </div>
             )}
+
+            <GlobalPagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={(newPage) => setPage(newPage)}
+            />
           </Card>
         </div>
       </DashboardLayout>
