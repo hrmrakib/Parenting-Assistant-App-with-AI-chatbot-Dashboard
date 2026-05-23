@@ -115,7 +115,7 @@ export default function MilestoneFormPage() {
     }
   };
 
-  const maxPeriod = isBaby ? 24 : 60;
+  const maxPeriod = isBaby ? 60 : 40;
   const periodLabel = isBaby ? "Month" : "Week";
 
   return (
